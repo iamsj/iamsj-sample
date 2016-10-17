@@ -33,12 +33,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.cloudhopper.proxool</groupId>
-			<artifactId>proxool</artifactId>
-			<version>0.9.1</version>
-		</dependency>
-
-		<dependency>
 			<groupId>dom4j</groupId>
 			<artifactId>dom4j</artifactId>
 			<version>1.6.1</version>
@@ -70,18 +64,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>net.gplatform</groupId>
-			<artifactId>Sdk4J</artifactId>
-			<version>2.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.whalin</groupId>
-			<artifactId>Memcached-Java-Client</artifactId>
-			<version>3.0.2</version>
-		</dependency>
-
-		<dependency>
 			<groupId>com.mchange</groupId>
 			<artifactId>mchange-commons-java</artifactId>
 			<version>0.2.11</version>
@@ -102,7 +84,7 @@
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid</artifactId>
-			<version>1.0.20</version>
+			  <version>1.0.24</version>
 		</dependency>
 
 		<dependency>

@@ -15,7 +15,6 @@
 			http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<!-- 配置数据源1 -->
-	
 	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close"> 
  	  <property name="driverClassName" value="${jdbc.driverClassName}" />
       <!-- 基本属性 url、user、password -->
@@ -62,7 +61,7 @@
                     <!-- 这里的几个配置主要演示如何使用，如果不理解，一定要去掉下面的配置 -->
                     <property name="properties">
                         <value>
-                            dialect=oracle
+                            dialect=mysql
                             reasonable=true
                             supportMethodsArguments=true
                             autoRuntimeDialect=true
@@ -115,6 +114,6 @@
 	<context:annotation-config />
 	<!-- 注解探测器 -->
 	<context:component-scan
-		base-package="com.posp.admin.service;com.posp.admin.third.service;" />
+		base-package="com.posp.admin.service;" />
 
 </beans>
