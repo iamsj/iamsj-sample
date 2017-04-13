@@ -25,23 +25,6 @@
 	<!-- 注解探测器 -->
 	<!-- <context:component-scan base-package="com.posp.pms.cache;com.posp.pms.web.filter;" />-->
 
-	<!-- 不需要登录url -->
-	<!-- <util:set id="freeURIRegexSet" value-type="java.lang.String">
-		<value>/auth/login.*$</value>
-		<value>/auth/loginService.*$</value>
-		<value>/auth/register.*$</value>
-		<value>/auth/registerService.*$</value>
-		<value>/common/imgCode.*$</value>
-		<value>/index.jsp$</value>
-		<value>/$</value>-->
-		<!-- 静态资源 -->
-	<!-- <value>/assets/*.*$</value>
-		<value>/css/*.*$</value>
-		<value>/img/*.*$</value>
-		<value>/js/*.*$</value>
-		<value>/inc/*.*$</value>
-	</util:set> -->  
-
 	<import resource="classpath*:spring/application-*-context.xml" />
 	
 </beans>

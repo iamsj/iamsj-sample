@@ -16,10 +16,14 @@
 			http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<mvc:annotation-driven />
-	<context:component-scan base-package="com.posp.admin.web.controller">
+	<!-- 使用Annotation自动注册Bean,只扫描@Controller -->
+	<context:component-scan base-package="com.iamsj.admin.web.controller">
 		<context:include-filter expression="org.springframework.stereotype.Controller"
 			type="annotation" />
 	</context:component-scan>
+	
+	<!-- 定义无Controller的path<->view直接映射 -->
+	<mvc:view-controller path="/" view-name="redirect:${web.view.index}"/>
 	
 	<bean id="messageSource"
 		class="org.springframework.context.support.ResourceBundleMessageSource">
@@ -50,33 +54,51 @@
 		</property>
 	</bean>
 	
-	<bean id="jstlViewResolver"
-		class="org.springframework.web.servlet.view.UrlBasedViewResolver"
-		parent="viewResolver">
-		<property name="order" value="2" />
+	<!-- JSP视图解析器  -->
+	<bean id="jstlViewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver" parent="viewResolver">
+		<property name="order" value="1" />
 		<property name="viewClass"
 			value="org.springframework.web.servlet.view.JstlView" />
 		<property name="prefix" value="/WEB-INF/view/" />
+		<property name="viewNames" value="*.jsp" />
+	</bean>
+
+  <!-- FreeMarker视图解析器 -->
+    <bean id="freeMarkerViewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+	    <property name="viewClass" value="org.springframework.web.servlet.view.freemarker.FreeMarkerView"/>
+	    <property name="contentType" value="text/html; charset=utf-8"/>
+	    <property name="cache" value="false"/>
+	    <property name="viewNames" value="*.ftl" />
+        <property name="suffix" value=""/>
+        <property name="order" value="2"/>
+	</bean>
+	
+	<bean class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+	    <property name="templateLoaderPath" value="/WEB-INF/freemark/"/>
 	</bean>
 
 	<!-- ===================== view resolver end ====================== -->
-	<bean
-		class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
-		<property name="messageConverters">
-			<list>
-				<bean
-					class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
-					<property name="objectMapper">
-						<bean class="com.fasterxml.jackson.databind.ObjectMapper">
-							<property name="serializationInclusion">
-								<value type="com.fasterxml.jackson.annotation.JsonInclude.Include">NON_NULL</value>
-							</property>
-						</bean>
-					</property>
-				</bean>
-			</list>
-		</property>
-	</bean>
+	<mvc:annotation-driven>
+		<mvc:message-converters register-defaults="true">
+            <bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>text/html;charset=UTF-8</value>
+                        <value>application/json</value>
+                    </list>
+                </property>
+                <property name="features">
+                    <list>
+                        <value>WriteMapNullValue</value>
+                        <value>QuoteFieldNames</value>
+                        <value>WriteDateUseDateFormat</value>
+						<!-- 禁用fastjson循环引用检测 -->
+						<value>DisableCircularReferenceDetect</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:message-converters>
+	</mvc:annotation-driven>
 
 	<bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
@@ -84,4 +106,20 @@
 		<property name="maxInMemorySize" value="4096" />
 		<property name="defaultEncoding" value="UTF-8"></property>
 	</bean>
+	
+	<!-- Kaptcha验证码生成器 -->
+	<bean name="producer" class="com.google.code.kaptcha.impl.DefaultKaptcha" scope="singleton">
+	    <property name="config">
+	        <bean class="com.google.code.kaptcha.util.Config">
+	            <constructor-arg>
+	                <props>
+	                    <prop key="kaptcha.border">no</prop>
+	                    <prop key="kaptcha.textproducer.font.color">black</prop>
+	                    <prop key="kaptcha.textproducer.char.space">5</prop>
+	                </props>
+	            </constructor-arg>
+	        </bean>
+	    </property>
+	</bean>
+	
 </beans>

@@ -4,13 +4,13 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
 	http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
-	<display-name>pms-app</display-name>	
+	<display-name>iamsj-app</display-name>	
 	<listener>
-        <description>Introspector缓存清除监听器</description>
+        <description>Introspector</description>
         <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
     </listener>
     <listener>
-        <description>request监听器</description>
+        <description>request</description>
         <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
     </listener>
     
@@ -29,11 +29,7 @@
 
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-	</listener>
-	
-	<listener>
-		<listener-class>com.posp.pms.system.listener.InitialListener</listener-class>
-	</listener>
+	</listener> 
 	
 	<servlet>
 		<servlet-name>springServlet</servlet-name>
@@ -47,39 +43,34 @@
 	
 	<servlet-mapping>
 		<servlet-name>springServlet</servlet-name>
-		<url-pattern>*.do</url-pattern>
+		<url-pattern>*.htm</url-pattern>
+        <url-pattern>*.json</url-pattern>
 	</servlet-mapping>
-	<!--  
-	<servlet-mapping>
-		<servlet-name>spring-servlet</servlet-name>
-		<url-pattern>/action/*</url-pattern>
-	</servlet-mapping>
-	-->
 
 	<!-- 配置 Druid 监控信息显示页面 -->  
-<servlet>  
-    <servlet-name>DruidStatView</servlet-name>  
-    <servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class>  
-    <init-param>  
-    <!-- 允许清空统计数据 -->  
-    <param-name>resetEnable</param-name>  
-    <param-value>true</param-value>  
-    </init-param>  
-    <init-param>  
-    <!-- 用户名 -->  
-    <param-name>loginUsername</param-name>  
-    <param-value>druid</param-value>  
-    </init-param>  
-    <init-param>  
-    <!-- 密码 -->  
-    <param-name>loginPassword</param-name>  
-    <param-value>druid</param-value>  
-    </init-param>  
-</servlet>  
-<servlet-mapping>  
-    <servlet-name>DruidStatView</servlet-name>  
-    <url-pattern>/druid/*</url-pattern>  
-</servlet-mapping> 
+	<servlet>  
+	    <servlet-name>DruidStatView</servlet-name>  
+	    <servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class>  
+	    <init-param>  
+	    <!-- 允许清空统计数据 -->  
+	    <param-name>resetEnable</param-name>  
+	    <param-value>true</param-value>  
+	    </init-param>  
+	    <init-param>  
+	    <!-- 用户名 -->  
+	    <param-name>loginUsername</param-name>  
+	    <param-value>druid</param-value>  
+	    </init-param>  
+	    <init-param>  
+	    <!-- 密码 -->  
+	    <param-name>loginPassword</param-name>  
+	    <param-value>druid</param-value>  
+	    </init-param>  
+	</servlet>  
+	<servlet-mapping>  
+	    <servlet-name>DruidStatView</servlet-name>  
+	    <url-pattern>/druid/*</url-pattern>  
+	</servlet-mapping>  
 	<!-- 浏览器form表单只支持GET与POST请求，而DELETE、PUT等method并不支持，
 	spring3.0添加了一个过滤器，可以将这些请求转换为标准的http方法，
 	使得支持GET、POST、PUT与DELETE请求 -->
@@ -91,7 +82,7 @@
 		<filter-name>HiddenHttpMethodFilter</filter-name>
 		<servlet-name>spring-servlet</servlet-name>
 	</filter-mapping>
-	
+
 	<!-- 字符编码过滤器
     forceEncoding:这个参数的值是指定response的字符集是否也设置成encoding所指定的字符集，
 	可以选择设置为true或false-->
@@ -113,41 +104,91 @@
         <filter-name>encodingFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-<filter>
-		<filter-name>logFilter</filter-name>
-		<filter-class>com.posp.core.log.LogFilter</filter-class>
+
+	<filter>
+	    <filter-name>sitemesh</filter-name>
+	    <filter-class>org.sitemesh.config.ConfigurableSiteMeshFilter</filter-class>
+	  </filter>
+	
+	  <filter-mapping>
+	    <filter-name>sitemesh</filter-name>
+	    <url-pattern>/*</url-pattern>
+	  </filter-mapping>
+
+	<!-- 配置Shiro过滤器,先让Shiro过滤系统接收到的请求 -->
+	<!-- 这里filter-name必须对应applicationContext.xml中定义的<bean id="shiroFilter"/> -->
+	<!-- 使用[/*]匹配所有请求,保证所有的可控请求都经过Shiro的过滤 -->
+	<!-- 通常会将此filter-mapping放置到最前面(即其他filter-mapping前面),以保证它是过滤器链中第一个起作用的 -->
+	<filter>
+		<filter-name>shiroFilter</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+		<init-param>
+			<!-- 该值缺省为false,表示生命周期由SpringApplicationContext管理,设置为true则表示由servlet container管理 -->
+			<param-name>targetFilterLifecycle</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	
+	<filter-mapping>
+	    <filter-name>shiroFilter</filter-name>
+	    <url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<filter>
+		<filter-name>DruidWebStatFilter</filter-name>
+		<filter-class>com.alibaba.druid.support.http.WebStatFilter</filter-class>
+		<init-param>
+			<param-name>exclusions</param-name>
+			<param-value>*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*</param-value>
+		</init-param>
 	</filter>
 	<filter-mapping>
-		<filter-name>logFilter</filter-name>
+		<filter-name>DruidWebStatFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-	
+
 	<filter>
-    <filter-name>DruidWebStatFilter</filter-name>
-    <filter-class>com.alibaba.druid.support.http.WebStatFilter</filter-class>
-    <init-param>
-        <param-name>exclusions</param-name>
-        <param-value>*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*</param-value>
-    </init-param>
-  </filter>
-  <filter-mapping>
-    <filter-name>DruidWebStatFilter</filter-name>
-    <url-pattern>/*</url-pattern>
-  </filter-mapping>
+		<filter-name>xssFilter</filter-name>
+		<filter-class>com.iamsj.web.xss.XssFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>xssFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+  
     <session-config>
         	<session-timeout>30</session-timeout>
     </session-config>
     
 	<!-- *************404*************** -->
-    <error-page>
+<!--     <error-page>
 	    <error-code>404</error-code>
-	    <location>/view/common/404.jsp</location>
+	    <location>/WEB-INF/view/commons/404.jsp</location>
 	</error-page>
 	<error-page>
 		<error-code>500</error-code>
-		<location>/view/common/500.jsp</location>
-	</error-page>
+		<location>/WEB-INF/view/commons/500.jsp</location>
+	</error-page> -->
+	 
 	<welcome-file-list>
-		<welcome-file>/view/testjsp/test.jsp</welcome-file>
+		<welcome-file>/WEB-INF/view/index.jsp</welcome-file>
 	</welcome-file-list>
+	
+<!-- 	<login-config>
+    Authorization setting for SSL
+    <auth-method>CLIENT-CERT</auth-method>
+    <realm-name>Client Cert Users-only Area</realm-name>
+   </login-config>
+   <security-constraint>0
+  Authorization setting for SSL
+    <web-resource-collection >
+  <web-resource-name >SSL</web-resource-name>
+   <url-pattern>/*</url-pattern>
+   </web-resource-collection>
+   <user-data-constraint>
+    <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+    </user-data-constraint>
+     </security-constraint> -->
+     
 </web-app>

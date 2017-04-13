@@ -4,7 +4,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
 	http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
-	<display-name>posp-admin</display-name>	
+	<display-name>iamsj-admin</display-name>	
 	<listener>
         <description>Introspector</description>
         <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
@@ -114,28 +114,48 @@
 	    <filter-name>sitemesh</filter-name>
 	    <url-pattern>/*</url-pattern>
 	  </filter-mapping>
-	 
-<!-- 	<filter>
- 		<filter-name>loginFilter</filter-name>
+
+	<!-- 配置Shiro过滤器,先让Shiro过滤系统接收到的请求 -->
+	<!-- 这里filter-name必须对应applicationContext.xml中定义的<bean id="shiroFilter"/> -->
+	<!-- 使用[/*]匹配所有请求,保证所有的可控请求都经过Shiro的过滤 -->
+	<!-- 通常会将此filter-mapping放置到最前面(即其他filter-mapping前面),以保证它是过滤器链中第一个起作用的 -->
+	<filter>
+		<filter-name>shiroFilter</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+		<init-param>
+			<!-- 该值缺省为false,表示生命周期由SpringApplicationContext管理,设置为true则表示由servlet container管理 -->
+			<param-name>targetFilterLifecycle</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	
+	<filter-mapping>
+	    <filter-name>shiroFilter</filter-name>
+	    <url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<filter>
+		<filter-name>DruidWebStatFilter</filter-name>
+		<filter-class>com.alibaba.druid.support.http.WebStatFilter</filter-class>
+		<init-param>
+			<param-name>exclusions</param-name>
+			<param-value>*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*</param-value>
+		</init-param>
 	</filter>
 	<filter-mapping>
-		<filter-name>loginFilter</filter-name>
+		<filter-name>DruidWebStatFilter</filter-name>
 		<url-pattern>/*</url-pattern>
-	</filter-mapping> -->
-	
+	</filter-mapping>
+
 	<filter>
-    <filter-name>DruidWebStatFilter</filter-name>
-    <filter-class>com.alibaba.druid.support.http.WebStatFilter</filter-class>
-    <init-param>
-        <param-name>exclusions</param-name>
-        <param-value>*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*</param-value>
-    </init-param>
-  </filter>
-  <filter-mapping>
-    <filter-name>DruidWebStatFilter</filter-name>
-    <url-pattern>/*</url-pattern>
-  </filter-mapping>
+		<filter-name>xssFilter</filter-name>
+		<filter-class>com.iamsj.web.xss.XssFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>xssFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
   
     <session-config>
         	<session-timeout>30</session-timeout>
@@ -150,13 +170,6 @@
 		<error-code>500</error-code>
 		<location>/WEB-INF/view/commons/500.jsp</location>
 	</error-page> -->
-	
-	 <jsp-config>
-        <taglib>
-            <taglib-uri>/permissionTags</taglib-uri>
-            <taglib-location>/WEB-INF/tags/permissionTags.tld</taglib-location>
-        </taglib>
-    </jsp-config>
 	 
 	<welcome-file-list>
 		<welcome-file>/WEB-INF/view/index.jsp</welcome-file>
@@ -167,7 +180,7 @@
     <auth-method>CLIENT-CERT</auth-method>
     <realm-name>Client Cert Users-only Area</realm-name>
    </login-config>
-   <security-constraint>
+   <security-constraint>0
   Authorization setting for SSL
     <web-resource-collection >
   <web-resource-name >SSL</web-resource-name>

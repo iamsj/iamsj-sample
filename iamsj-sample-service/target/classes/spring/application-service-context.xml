@@ -15,7 +15,6 @@
 			http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<!-- 配置数据源1 -->
-	
 	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close"> 
  	  <property name="driverClassName" value="${jdbc.driverClassName}" />
       <!-- 基本属性 url、user、password -->
@@ -54,25 +53,6 @@
 				<value>classpath*:mybatis/sqlmap/*.xml</value>
 			</list>
 		</property>
-		<!--<property name="typeAliasesPackage" value="com.tiantian.mybatis.model" 
-			/> -->
-		<property name="plugins">
-            <array>
-                <bean class="com.github.pagehelper.PageHelper">
-                    <!-- 这里的几个配置主要演示如何使用，如果不理解，一定要去掉下面的配置 -->
-                    <property name="properties">
-                        <value>
-                            dialect=oracle
-                            reasonable=true
-                            supportMethodsArguments=true
-                            autoRuntimeDialect=true
-                            closeConn=true
-                            show_sql=true
-                        </value>
-                    </property>
-                </bean>
-            </array>   
-		</property>
 	</bean>
 
 	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
@@ -81,7 +61,7 @@
 
 	<!-- 扫描mapper.java -->
 	<bean name="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.posp.admin.dao" />
+		<property name="basePackage" value="com.iamsj.mapper" />
 		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
 	</bean>
 
@@ -114,7 +94,6 @@
 		/> </aop:config> -->
 	<context:annotation-config />
 	<!-- 注解探测器 -->
-	<context:component-scan
-		base-package="com.posp.admin.service;com.posp.admin.third.service;" />
+	<context:component-scan base-package="com.iamsj.service;" />
 
 </beans>

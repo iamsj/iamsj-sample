@@ -1,143 +1,68 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+"http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<!-- -Dmybatis.generator.overwrite=true mybatis-generator:generate -->
 <generatorConfiguration>
-	<classPathEntry location="tool/ojdbc14-10.2.0.3.0.jar" />
-	<!-- <classPathEntry location="D:\Workspaces\veryplanet\pms-web\tool\jsqlparser-0.9.4.jar" 
-		/> <classPathEntry location="D:\Workspaces\veryplanet\pms-web\tool\pagehelper-4.1.3.jar" 
-		/> -->
-	<context id="context1" targetRuntime="MyBatis3"
-		defaultModelType="flat">
-		<!-- plugin -->
+	<classPathEntry location="tool/mybatis-plugin.jar" />
+	<classPathEntry location="tool/mysql-connector-java-5.1.34.jar" />
+	<context id="ho" targetRuntime="MyBatis3" defaultModelType="flat">
+
+		<property name="javaFileEncoding" value="UTF-8" />
+		<plugin type="com.core.plugin.mybatis.ModelExampleLimitPlugin" />
+		<plugin type="com.core.plugin.mybatis.ModelJavaDocPlugin" />
 		<plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
-		<jdbcConnection driverClass="oracle.jdbc.driver.OracleDriver"
-			connectionURL="jdbc:oracle:thin:@54.169.225.243:1521:ERP" userId="posp"
-			password="posP1219" />
-		<javaModelGenerator targetPackage="com.posp.admin.entity"
-			targetProject="src/main/java">
+		<commentGenerator>
+			<property name="suppressDate" value="true" />
+			<property name="suppressAllComments" value="true" />
+		</commentGenerator>
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+		connectionURL="jdbc:mysql://127.0.0.1:3306/iamsjframe" userId="root"
+		password="1q2w3e4r"></jdbcConnection>
+		<javaTypeResolver>
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+		<javaModelGenerator targetPackage="com.iamsj.model"
+		targetProject="src/main/java">
 			<property name="enableSubPackages" value="false" />
 			<property name="trimStrings" value="true" />
 		</javaModelGenerator>
 		<sqlMapGenerator targetPackage="mybatis.sqlmap"
-			targetProject="src/main/resources">
+		targetProject="src/main/resources">
 			<property name="enableSubPackages" value="false" />
 		</sqlMapGenerator>
 		<javaClientGenerator type="XMLMAPPER"
-			targetPackage="com.posp.admin.dao" targetProject="src/main/java">
+		targetPackage="com.iamsj.mapper" targetProject="src/main/java">
 			<property name="enableSubPackages" value="false" />
 		</javaClientGenerator>
-		<!--
-		<table tableName="t_proxy_institution" domainObjectName="ProxyInstitution">
-			<generatedKey column="ID"
-				sqlStatement="select SEQ_proxy_institution_ID.nextval from dual" />
-			<columnOverride column="ID" javaType="java.lang.Long"></columnOverride>
-			<columnOverride column="create_user_id" javaType="java.lang.Long"></columnOverride>
-			<columnOverride column="UPDATE_USER_ID" javaType="java.lang.Long"></columnOverride>
-		</table>
 		
-		<table tableName="t_proxy_merchant" domainObjectName="ProxyMerchant">
-			<generatedKey column="ID"
-				sqlStatement="select SEQ_proxy_merchant_ID.nextval from dual" />
-			<columnOverride column="ID" javaType="java.lang.Long"></columnOverride>
-			<columnOverride column="PROXY_INSTITUTION_ID" javaType="java.lang.Long"></columnOverride>
-			<columnOverride column="create_user_id" javaType="java.lang.Long"></columnOverride>
-			<columnOverride column="UPDATE_USER_ID" javaType="java.lang.Long"></columnOverride>
-		</table>
-		
-		 <table tableName="t_store" domainObjectName="Store">
-			<generatedKey column="STORE_ID"
-				sqlStatement="select SEQ_STORE.nextval from dual" />
-			<columnOverride column="STORE_ID" javaType="java.lang.String"></columnOverride>
-			<columnOverride column="day_trade_amount" javaType="java.lang.Double"></columnOverride>
-		</table> -->
-<!-- 		<table tableName="TBL_TRADE_INF" domainObjectName="TradeInf">
-			<generatedKey column="RETSERIAL"
-				sqlStatement="select TRADE_SEQUENCE.nextval from dual" />
-			<columnOverride column="FLAG" javaType="java.lang.Integer"></columnOverride>
-			<columnOverride column="VSTAT" javaType="java.lang.Integer"></columnOverride>
-			<columnOverride column="CSTAT" javaType="java.lang.Integer"></columnOverride>
-			<columnOverride column="DISCOUNTFLAG" javaType="java.lang.Integer"></columnOverride>
-			<columnOverride column="CHANNELID" javaType="java.lang.Integer"></columnOverride>
-			<columnOverride column="STATUS" javaType="java.lang.Integer"></columnOverride>
-		</table> -->
-		
-		<!-- <table tableName="TBL_SHOP_INF" domainObjectName="ShopInf">
-			<generatedKey column="MERCHANTID"
-				sqlStatement="select SEQ_MERCHANT.nextval from dual" />
-			<columnOverride column="MERCHANTID" javaType="java.lang.String"></columnOverride>
-		</table>
-		
-		-->
-		<table tableName="t_merchant" domainObjectName="Merchant">
-		
-		</table>
-		 
-		<!-- 
-		<table tableName="T_PAYMENT" domainObjectName="Payment">
-			<columnOverride column="STORE_ID" javaType="java.lang.Long"></columnOverride>
-			<columnOverride column="TXN_AMOUNT" javaType="java.lang.Double"></columnOverride>
-			<columnOverride column="SERVICE_FEE" javaType="java.lang.Double"></columnOverride>
-		</table>
-		
-		<table tableName="T_REFUND" domainObjectName="Refund">
-			<columnOverride column="TXN_AMOUNT" javaType="java.lang.Double"></columnOverride>
-			<columnOverride column="SERVICE_FEE" javaType="java.lang.Double"></columnOverride>
-		</table>
-		 -->
-		
-		 <!-- 
-		<table tableName="t_menu" domainObjectName="Menu">
-			<generatedKey column="id"
-				sqlStatement="select SEQ_MENU_ID.nextval from dual" />
-			<columnOverride column="id" javaType="java.lang.Long"></columnOverride>
-			<columnOverride column="parent_id" javaType="java.lang.Long"></columnOverride>
-			<columnOverride column="layers" javaType="java.lang.Integer"></columnOverride>
-			<columnOverride column="create_user_id" javaType="java.lang.Long"></columnOverride>
-			<columnOverride column="update_user_id" javaType="java.lang.Long"></columnOverride>
-		</table>
- 		 
-		 <table tableName="t_permission" domainObjectName="Permission">
-			<generatedKey column="id"
-				sqlStatement="select SEQ_PERMISSION_ID.nextval from dual" />
-			<columnOverride column="id" javaType="java.lang.Long"></columnOverride>
-			<columnOverride column="create_user_id" javaType="java.lang.Long"></columnOverride>
-			<columnOverride column="update_user_id" javaType="java.lang.Long"></columnOverride>
-			<columnOverride column="group_id" javaType="java.lang.Long"></columnOverride>
-		</table>
-		
-		  
-		<table tableName="t_role_permission" domainObjectName="RolePermission">
-			<generatedKey column="id"
-				sqlStatement="select SEQ_ROLE_PERMISSION_ID.nextval from dual" />
-			<columnOverride column="id" javaType="java.lang.Long"></columnOverride>
-			<columnOverride column="role_id" javaType="java.lang.Long"></columnOverride>
-		</table>
-		-->
-		 <!--
 		<table tableName="t_user" domainObjectName="User">
-			<generatedKey column="id"
-				sqlStatement="select SEQ_USER_ID.nextval from dual" />
-			<columnOverride column="id" javaType="java.lang.Long"></columnOverride>
-			<columnOverride column="biz_id" javaType="java.lang.Long"></columnOverride>
- 			<columnOverride column="create_user_id" javaType="java.lang.Long"></columnOverride>
-			<columnOverride column="update_user_id" javaType="java.lang.Long"></columnOverride>
-		</table> 
-		  
-		<table tableName="t_role" domainObjectName="Role">
-			<generatedKey column="id"
-				sqlStatement="select SEQ_ROLE_ID.nextval from dual" />
-			<columnOverride column="id" javaType="java.lang.Long"></columnOverride>
-			<columnOverride column="create_user_id" javaType="java.lang.Long"></columnOverride>
-			<columnOverride column="update_user_id" javaType="java.lang.Long"></columnOverride>
+			<property name="useActualColumnNames" value="false" />
+			<generatedKey column="id" sqlStatement="SELECT LAST_INSERT_ID()"
+			identity="true" type="post" />
 		</table>
-		
-		
+		<table tableName="t_role" domainObjectName="Role">
+			<property name="useActualColumnNames" value="false" />
+			<generatedKey column="id" sqlStatement="SELECT LAST_INSERT_ID()"
+			identity="true" type="post" />
+		</table>
 		<table tableName="t_user_role" domainObjectName="UserRole">
-			<generatedKey column="id"
-				sqlStatement="select SEQ_USER_ROLE_ID.nextval from dual" />
-			<columnOverride column="id" javaType="java.lang.Long"></columnOverride>
-			<columnOverride column="user_id" javaType="java.lang.Long"></columnOverride>
-			<columnOverride column="role_id" javaType="java.lang.Long"></columnOverride>
-		</table> 
-		-->
+			<property name="useActualColumnNames" value="false" />
+			<generatedKey column="id" sqlStatement="SELECT LAST_INSERT_ID()"
+			identity="true" type="post" />
+		</table>
+		<table tableName="t_permission" domainObjectName="Permission">
+			<property name="useActualColumnNames" value="false" />
+			<generatedKey column="id" sqlStatement="SELECT LAST_INSERT_ID()"
+			identity="true" type="post" />
+		</table>
+		<table tableName="t_role_permission" domainObjectName="RolePermission">
+			<property name="useActualColumnNames" value="false" />
+			<generatedKey column="id" sqlStatement="SELECT LAST_INSERT_ID()"
+			identity="true" type="post" />
+		</table>
+
 	</context>
+
 </generatorConfiguration>
