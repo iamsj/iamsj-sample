@@ -43,10 +43,6 @@ public abstract class BaseController {
 		return SecurityUtils.getSubject().getPrincipal() != null;
 	}
 
-	public void logout() {
-		SecurityUtils.getSubject().logout();
-	}
-
 	public String getKaptcha(String key) {
 		String kaptcha = getSessionAttribute(key).toString();
 		getSession().removeAttribute(key);
