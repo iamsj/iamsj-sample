@@ -20,6 +20,11 @@
 		<!-- local -->
 		<dependency>
 			<groupId>com.iamsj</groupId>
+			<artifactId>iamsj-sample-api</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.iamsj</groupId>
 			<artifactId>iamsj-sample-service</artifactId>
 			<version>${project.version}</version>
 		</dependency>
